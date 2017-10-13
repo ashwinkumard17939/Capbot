@@ -1,0 +1,47 @@
+<config>
+	<script><![CDATA[
+	    import org.openqa.selenium.*;
+	    import org.apache.commons.io.*;
+	    import java.nio.file.*;
+	    import java.util.UUID;
+	    String filename = "";
+	    byte[] result;
+	]]></script>
+	<selenium-flow>
+	    <selenium browser="autoit" close-on-completion="false" start-in-private="false" maximize-on-startup="false" name="seleniumDriver0">
+	        <script><![CDATA[
+	            aDriver = seleniumDriver0.getWrappedObject();
+	            System.out.println("\n\n\n\n Generating File Name .... ");
+	            filename = "d:/WH-ScreenShot-Desktp/screenshot__"+UUID.randomUUID()+".png";
+	            System.out.println("\n\n\n\n Preparing script to Capture screenshot .... ");
+	            String script = "#include <ScreenCapture.au3>\n" +
+	                "_ScreenCapture_Capture(\""+filename+"\")\n";
+	            System.out.println("\n\n\n\n Executing script to capture screenshot .... ");
+	            aDriver.executeScript(script, new String[0]);
+	            
+	            //File Encoding and decoding code below. The decoded version is get saved on S3
+	            /*System.out.println("\n\n\n\n Encoding file result.... ");
+	            
+	            Object res = aDriver.executeScript("def bytes = new File('" + filename.replace('\\', '/') + "').bytes; \n" + "return Base64.getEncoder().encodeToString(bytes);", new String[]{"GROOVY"});
+	            System.out.println("\n\n\n\n Encoding result is ["+res+"] .... ");
+	            System.out.println("\n\n\n\n decoding file result .... ");
+	            result = Base64.getDecoder().decode(res.toString());
+	            System.out.println("\n\n\n\n decoded result is in bytes as ["+result+"] .... ");
+	            System.out.println("\n\n\n\n Executing script for deleting file .... ");*/
+	            
+	            //deleting the screenshot file
+	            //aDriver.executeScript("new File('" + filename.replace('\\', '/') + "').delete(); \n", new String[]{"GROOVY"});
+	        ]]></script>
+	    </selenium>
+	</selenium-flow>
+	<!-- for saving
+	<var-def name="content">
+    		<script return="result"><![CDATA[
+    		]]></script>
+	</var-def>
+	<s3 bucket='temp_bucket'>
+    		<s3-put path="backetname/${filename}">
+        		<var name="content"/>
+    		</s3-put>
+	</s3> -->
+</config>
